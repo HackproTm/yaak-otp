@@ -2,14 +2,18 @@
   "name": "@hackpro/yaak-otp",
   "displayName": "TOTP Generator",
   "description": "Generate TOTP and Steam codes from your API client",
-  "version": "0.1.0",
+  "repository": "https://github.com/HackproTm/yaak-otp",
+  "private": false,
+  "version": "0.1.1",
   "scripts": {
-    "build": "yaakcli build",
-    "dev": "yaakcli dev"
+    "build": "yaak plugin build",
+    "dev": "yaak plugin dev"
+  },
+  "dependencies": {
+    "@yaakapp/api": "^0.8.3"
   },
   "devDependencies": {
     "@types/node": "^26.0.0",
-    "@yaakapp/api": "^0.8.3",
     "typescript": "^6.0.3"
   }
 }
