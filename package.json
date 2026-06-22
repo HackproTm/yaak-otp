@@ -7,13 +7,15 @@
   "version": "0.1.1",
   "scripts": {
     "build": "yaak plugin build",
-    "dev": "yaak plugin dev"
+    "dev": "yaak plugin dev",
+    "test": "vitest run"
   },
   "dependencies": {
     "@yaakapp/api": "^0.8.3"
   },
   "devDependencies": {
     "@types/node": "^26.0.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   }
 }

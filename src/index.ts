@@ -8,7 +8,7 @@ const digitsList = [6, 7, 8] as const;
 const algorithms = ["SHA1", "SHA256", "SHA512"] as const;
 const inputFormats = ["Base32", "Hex", "Text"] as const;
 
-function base32Decode(encoded: string): Buffer {
+export function base32Decode(encoded: string): Buffer {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
   const cleaned = encoded.replace(/[^A-Za-z2-7]/g, "").toUpperCase();
   const bits: string[] = [];
@@ -25,7 +25,7 @@ function base32Decode(encoded: string): Buffer {
   return Buffer.from(bytes);
 }
 
-function hexDecode(hex: string): Buffer {
+export function hexDecode(hex: string): Buffer {
   const cleaned = hex.replace(/[-: ]/g, "");
   if (cleaned.length % 2 !== 0) {
     throw new Error("Hex string must have an even number of characters");
@@ -37,7 +37,7 @@ function hexDecode(hex: string): Buffer {
   return Buffer.from(bytes);
 }
 
-function secretToBytes(secret: string, format: string): Buffer {
+export function secretToBytes(secret: string, format: string): Buffer {
   switch (format) {
     case "Base32":
       return base32Decode(secret);
@@ -50,23 +50,23 @@ function secretToBytes(secret: string, format: string): Buffer {
   }
 }
 
-function counterToBuffer(timeCounter: number): Buffer {
+export function counterToBuffer(timeCounter: number): Buffer {
   const buf = Buffer.alloc(8);
-  let tc = timeCounter;
+  let tc = BigInt(Math.floor(timeCounter));
   for (let i = 7; i >= 0; i--) {
-    buf[i] = tc & 0xff;
-    tc = tc >> 8;
+    buf[i] = Number(tc & 0xffn);
+    tc >>= 8n;
   }
   return buf;
 }
 
-function computeHmac(algorithm: string, key: Buffer, data: Buffer): Buffer {
+export function computeHmac(algorithm: string, key: Buffer, data: Buffer): Buffer {
   const hmac = createHmac(algorithm.toLowerCase(), key);
   hmac.update(data);
   return hmac.digest();
 }
 
-function truncatedValue(hash: Buffer): number {
+export function truncatedValue(hash: Buffer): number {
   const offset = hash[hash.length - 1] & 0xf;
   return (
     ((hash[offset] & 0x7f) << 24) |
@@ -76,7 +76,7 @@ function truncatedValue(hash: Buffer): number {
   );
 }
 
-function generateTOTP(secret: Buffer, timeCounter: number, digits: number, algorithm: string): string {
+export function generateTOTP(secret: Buffer, timeCounter: number, digits: number, algorithm: string): string {
   const counterBuf = counterToBuffer(timeCounter);
   const hash = computeHmac(algorithm, secret, counterBuf);
   const code = truncatedValue(hash);
@@ -84,7 +84,7 @@ function generateTOTP(secret: Buffer, timeCounter: number, digits: number, algor
   return otp.toString().padStart(digits, "0");
 }
 
-function generateSteam(secret: Buffer, timeCounter: number, algorithm: string): string {
+export function generateSteam(secret: Buffer, timeCounter: number, algorithm: string): string {
   const counterBuf = counterToBuffer(timeCounter);
   const hash = computeHmac(algorithm, secret, counterBuf);
 
@@ -98,7 +98,7 @@ function generateSteam(secret: Buffer, timeCounter: number, algorithm: string): 
   return code;
 }
 
-function getUnixTime(customMs: string | undefined): number {
+export function getUnixTime(customMs: string | undefined): number {
   if (customMs) {
     return Math.floor(parseInt(String(customMs), 10) / 1000);
   }
