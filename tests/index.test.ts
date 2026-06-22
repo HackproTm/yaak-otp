@@ -10,7 +10,7 @@ import {
   generateSteam,
   getUnixTime,
   plugin,
-} from "./index";
+} from "../src/index";
 
 // RFC 4226 test vector: secret = "12345678901234567890" (ASCII)
 const RFC_SECRET_HEX = "3132333435363738393031323334353637383930";
