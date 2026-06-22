@@ -252,17 +252,20 @@ describe("plugin structure", () => {
   });
 
   test("has templateFunctions array with 2 items", () => {
-    expect(Array.isArray(plugin.templateFunctions)).toBe(true);
-    expect(plugin.templateFunctions).toHaveLength(2);
+    const fns = plugin.templateFunctions!;
+    expect(Array.isArray(fns)).toBe(true);
+    expect(fns).toHaveLength(2);
   });
 
   test("first function is otp.generate", () => {
-    const fn = plugin.templateFunctions[0];
+    const fns = plugin.templateFunctions!;
+    const fn = fns[0];
     expect(fn?.name).toBe("otp.generate");
   });
 
   test("second function is otp.verify", () => {
-    const fn = plugin.templateFunctions[1];
+    const fns = plugin.templateFunctions!;
+    const fn = fns[1];
     expect(fn?.name).toBe("otp.verify");
   });
 });
